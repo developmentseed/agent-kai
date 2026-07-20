@@ -1,0 +1,284 @@
+[
+  {
+    "traceId": "initial-message",
+    "id": "1",
+    "type": "assistant",
+    "message": "Hi, I'm your **Assistant**.  \nWhat would you like to explore today?",
+    "timestamp": "2025-10-22T10:48:37.372Z"
+  },
+  {
+    "type": "user",
+    "message": "show me portugal's aoi",
+    "traceId": "5a446981-55ee-465f-af69-af2a62bc7efc",
+    "id": "5a446981-55ee-465f-af69-af2a62bc7efd",
+    "timestamp": "2025-10-22T10:48:47.958Z"
+  },
+  {
+    "type": "aoi",
+    "message": "",
+    "data": {
+      "bbox": [
+        -31.5572592,
+        29.8282588,
+        -6.1891593,
+        42.1543112
+      ],
+      "type": "Feature",
+      "geometry": {
+        "bbox": null,
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -16.0542652,
+              29.8282588
+            ],
+            [
+              -16.0864665,
+              29.8305582
+            ],
+            [
+              -16.1179836,
+              29.8367616
+            ],
+            [
+              -16.1481981,
+              29.846747
+            ],
+            [
+              -16.1765165,
+              29.8603185
+            ],
+            [
+              -31.4216604,
+              39.1960297
+            ],
+            [
+              -31.4583636,
+              39.2237624
+            ],
+            [
+              -31.4786675,
+              39.245119
+            ],
+            [
+              -31.5065608,
+              39.2845981
+            ],
+            [
+              -31.5399992,
+              39.3499376
+            ],
+            [
+              -31.5503015,
+              39.3857368
+            ],
+            [
+              -31.5572592,
+              39.4323546
+            ],
+            [
+              -31.5566806,
+              39.4589068
+            ],
+            [
+              -31.5547127,
+              39.4721038
+            ],
+            [
+              -31.5474581,
+              39.498057
+            ],
+            [
+              -31.5193471,
+              39.5613858
+            ],
+            [
+              -31.5047205,
+              39.5876601
+            ],
+            [
+              -31.350422,
+              39.8176038
+            ],
+            [
+              -31.3328552,
+              39.8400123
+            ],
+            [
+              -31.2993386,
+              39.8702691
+            ],
+            [
+              -31.2729904,
+              39.8873739
+            ],
+            [
+              -31.2439582,
+              39.901676
+            ],
+            [
+              -31.2127405,
+              39.9129288
+            ],
+            [
+              -31.179875,
+              39.9209387
+            ],
+            [
+              -31.1459276,
+              39.9255675
+            ],
+            [
+              -8.1987535,
+              42.1543112
+            ],
+            [
+              -6.5883071,
+              41.9675665
+            ],
+            [
+              -6.5701604,
+              41.9580644
+            ],
+            [
+              -6.5493949,
+              41.9445432
+            ],
+            [
+              -6.2014635,
+              41.5945637
+            ],
+            [
+              -6.1969584,
+              41.5895036
+            ],
+            [
+              -6.1891593,
+              41.5748318
+            ],
+            [
+              -6.931521,
+              38.2083074
+            ],
+            [
+              -7.3862731,
+              36.9747253
+            ],
+            [
+              -15.7008399,
+              29.9889945
+            ],
+            [
+              -15.720579,
+              29.9752067
+            ],
+            [
+              -15.871209,
+              29.875716
+            ],
+            [
+              -15.8979747,
+              29.8596984
+            ],
+            [
+              -15.9329461,
+              29.8448937
+            ],
+            [
+              -15.9676718,
+              29.8352685
+            ],
+            [
+              -15.999836,
+              29.8307018
+            ],
+            [
+              -16.0542652,
+              29.8282588
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "country": "PT",
+        "name": "Portugal"
+      },
+      "id": null
+    },
+    "timestamp": "2025-10-22T10:48:53.105Z",
+    "traceId": "5a446981-55ee-465f-af69-af2a62bc7efc",
+    "id": "cdc2c52f-bdf2-4b7c-87d8-fd700f20e81e"
+  },
+  {
+    "type": "assistant",
+    "message": "The Area of Interest (AOI) for **Portugal** has been successfully identified with the following bounding box coordinates:\n- **Longitude Range**: -31.5572592 to -6.1891593\n- **Latitude Range**: 29.8282588 to 42.1543112",
+    "timestamp": "2025-10-22T10:48:56.649Z",
+    "traceId": "5a446981-55ee-465f-af69-af2a62bc7efc",
+    "id": "2ea23eeb-c73a-471f-8020-5139a5d41a37"
+  },
+  {
+    "type": "user",
+    "message": "yes. plot!",
+    "id": "cd3170fd-e91a-4687-bd27-74d81cf205bd",
+    "timestamp": "2025-10-22T10:55:19.112Z"
+  },
+  {
+    "type": "error",
+    "message": "This is some sort of error message.",
+    "id": "cd3170fd-e91a-4687-bd27-74d81cf304cc",
+    "timestamp": "2025-10-22T10:59:19.112Z"
+  },
+  {
+    "type": "user",
+    "message": "what's that!",
+    "id": "cd3170fd-e91a-4687-bc27-74d81cf304bd",
+    "timestamp": "2025-10-22T10:59:19.112Z"
+  },
+  {
+    "type": "image",
+    "message": "",
+    "data": {
+      "type": "image/png",
+      "url": "https://placecats.com/800/500"
+    },
+    "timestamp": "2025-10-22T10:55:39.492Z",
+    "traceId": "54d1e25b-e5e0-4082-b54a-bc9ced4f0000",
+    "id": "54d1e25b-e5e0-4082-b54a-bc9ced4f84a1"
+  },
+  {
+    "type": "aoi",
+    "message": "",
+    "data": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -9.0542652,
+          38.8282588
+        ]
+      },
+      "properties": {
+        "name": "Point in Lisbon"
+      },
+      "id": null
+    },
+    "timestamp": "2025-10-22T10:48:53.105Z",
+    "traceId": "54d1e25b-e5e0-4082-b54a-bc9ced4f0000",
+    "id": "cdc2c52f-bdf2-4b7c-0000-fd700f20e81e"
+  },
+  {
+    "type": "assistant",
+    "message": "An aoi that's a **single point**",
+    "timestamp": "2025-10-24T10:48:56.649Z",
+    "traceId": "54d1e25b-e5e0-4082-b54a-bc9ced4f0000",
+    "id": "2ea23eeb-0000-471f-8020-5139a5d41a37"
+  },
+  {
+    "traceId": "995d0e2b2810a7a72645d024032835e1",
+    "type": "assistant",
+    "message": "Here is some data with a source at the end of the sentence.[[1]](https://developmentseed.org)",
+    "timestamp": "2025-11-04T12:00:17.983Z",
+    "id": "ff2467a8-4487-4638-ac78-4fa431e7365c"
+  }
+]

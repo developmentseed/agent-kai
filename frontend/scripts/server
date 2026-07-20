@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ -n "$APP_AUTH_USER" ] && [ -n "$APP_AUTH_PASS" ]; then
+  http-server $1 -p 80 --gzip --username "$APP_AUTH_USER" --password "$APP_AUTH_PASS"
+else
+  http-server $1 -p 80 --gzip
+fi

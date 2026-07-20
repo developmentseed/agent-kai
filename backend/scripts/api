@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+set -e
+
+uv run uvicorn src.agent_kai.api.app:app --host 0.0.0.0 --port 8000 --reload --reload-include src/agent_kai/

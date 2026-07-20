@@ -1,0 +1,81 @@
+#!/usr/bin/env sh
+
+set -e
+
+REGISTRY=
+BASE_URL=
+API_URL=
+APP_TITLE=
+TAG="latest"
+PUSH=false
+MAPTILER_KEY=""
+LOCAL_IMAGE=
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --tag)
+      TAG="$2"
+      shift 2
+      ;;
+    --push)
+      PUSH=true
+      shift
+      ;;
+    --base-url)
+      BASE_URL="$2"
+      shift 2
+      ;;
+    --api-url)
+      API_URL="$2"
+      shift 2
+      ;;
+    --app-title)
+      APP_TITLE="$2"
+      shift 2
+      ;;
+    --maptiler-key)
+      MAPTILER_KEY="$2"
+      shift 2
+      ;;
+    --registry)
+      REGISTRY="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown option: $1"
+      echo "Usage: $0 --maptiler-key <key> [--tag <tag>] [--push] [--base-url <url>] [--api-url <url>] [--app-title <title>] [--registry <registry>]"
+      exit 1
+      ;;
+  esac
+done
+
+if [ -z "$MAPTILER_KEY" ]; then
+  echo "❌ Error: --maptiler-key is required."
+  echo "Usage: $0 --maptiler-key <key> [--tag <tag>] [--push] [--base-url <url>] [--api-url <url>] [--app-title <title>]"
+  exit 1
+fi
+
+TAGGED_IMAGE="$REGISTRY:$TAG"
+LATEST_IMAGE="$REGISTRY:latest"
+
+DOCKER_DEFAULT_PLATFORM="linux/amd64" docker build \
+  --build-arg VITE_BASE_URL="$BASE_URL" \
+  --build-arg VITE_API_URL="$API_URL" \
+  --build-arg VITE_APP_TITLE="$APP_TITLE" \
+  --build-arg VITE_APP_DESCRIPTION="Destination Earth Digital Twin Assistant" \
+  --build-arg VITE_MAPTILER_KEY="$MAPTILER_KEY" \
+   -t "$LOCAL_IMAGE" .
+
+docker tag "$LOCAL_IMAGE" "$TAGGED_IMAGE"
+
+if [ "$TAG" != "latest" ]; then
+  docker tag "$LOCAL_IMAGE" "$LATEST_IMAGE"
+fi
+
+if [ "$PUSH" = true ]; then
+  docker push "$TAGGED_IMAGE"
+
+  if [ "$TAG" != "latest" ]; then
+    docker push "$LATEST_IMAGE"
+  fi
+fi

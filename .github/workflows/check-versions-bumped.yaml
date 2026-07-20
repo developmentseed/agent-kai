@@ -1,0 +1,86 @@
+name: Ensure that backend and frontend changes include a version bump
+
+on:
+  pull_request:
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend_changed: ${{ steps.filter.outputs.backend }}
+      frontend_changed: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+            frontend:
+              - 'frontend/**'
+
+  check-backend-version-bumped:
+    needs: [detect-changes]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        if: needs.detect-changes.outputs.backend_changed == 'true'
+        with:
+          fetch-depth: 0  # Needed to diff with base branch
+
+      - name: Check if version in pyproject.toml was updated
+        if: needs.detect-changes.outputs.backend_changed == 'true'
+        run: |
+          # Get base and head refs
+          BASE_REF="${{ github.event.pull_request.base.sha }}"
+          HEAD_REF="${{ github.event.pull_request.head.sha }}"
+
+          echo "Comparing version field between $BASE_REF and $HEAD_REF"
+
+          BASE_VERSION=$(git show $BASE_REF:backend/pyproject.toml | grep '^version' | head -n1 | cut -d '"' -f2)
+          HEAD_VERSION=$(git show $HEAD_REF:backend/pyproject.toml | grep '^version' | head -n1 | cut -d '"' -f2)
+
+          echo "Base version: $BASE_VERSION"
+          echo "Head version: $HEAD_VERSION"
+
+          if [ "$BASE_VERSION" = "$HEAD_VERSION" ]; then
+            echo "❌ Version not changed in pyproject.toml. Please update the version."
+            exit 1
+          else
+            echo "✅ Version was updated."
+          fi
+
+  check-frontend-version-bumped:
+    needs: [detect-changes]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        if: needs.detect-changes.outputs.frontend_changed == 'true'
+        with:
+          fetch-depth: 0  # Needed to diff with base branch
+
+      - name: Check if version in package.json was updated
+        if: needs.detect-changes.outputs.frontend_changed == 'true'
+        run: |
+          # Get base and head refs
+          BASE_REF="${{ github.event.pull_request.base.sha }}"
+          HEAD_REF="${{ github.event.pull_request.head.sha }}"
+
+          echo "Comparing version field between $BASE_REF and $HEAD_REF"
+
+          BASE_VERSION=$(git show $BASE_REF:frontend/package.json | jq -r '.version')
+          HEAD_VERSION=$(git show $HEAD_REF:frontend/package.json | jq -r '.version')
+
+          echo "Base version: $BASE_VERSION"
+          echo "Head version: $HEAD_VERSION"
+
+          if [ "$BASE_VERSION" = "$HEAD_VERSION" ]; then
+            echo "❌ Version not changed in package.json. Please update the version."
+            exit 1
+          else
+            echo "✅ Version was updated."
+          fi
+
