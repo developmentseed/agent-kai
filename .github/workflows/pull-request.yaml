@@ -125,4 +125,4 @@ jobs:
       - name: Build image
         run: |
           cd frontend
-          scripts/build-docker-image --maptiler-key ${{ secrets.MAPTILER_KEY }}
+          scripts/build-docker-image

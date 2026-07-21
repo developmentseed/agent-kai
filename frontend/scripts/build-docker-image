@@ -2,69 +2,101 @@
 
 set -e
 
+IMAGE="agentkai-frontend"
 REGISTRY=
 BASE_URL=
 API_URL=
-APP_TITLE=
+APP_TITLE="AgentKai"
+APP_DESCRIPTION="A barebones demo of an agentic chat application"
 TAG="latest"
 PUSH=false
 MAPTILER_KEY=""
-LOCAL_IMAGE=
+
+usage() {
+  echo "Usage: $0 [--maptiler-key <key>] [--tag <tag>] [--push] [--base-url <url>] [--api-url <url>] [--app-title <title>] [--registry <registry>]"
+}
+
+# Every long option below takes a value, so check one is actually there
+# before shifting past it - an unset CI secret expands to nothing and would
+# otherwise blow up on `shift 2`.
+require_value() {
+  if [ $# -lt 2 ]; then
+    echo "❌ Error: $1 requires a value."
+    usage
+    exit 1
+  fi
+}
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --tag)
-      TAG="$2"
-      shift 2
-      ;;
     --push)
       PUSH=true
       shift
       ;;
+    --tag)
+      require_value "$@"
+      TAG="$2"
+      shift 2
+      ;;
     --base-url)
+      require_value "$@"
       BASE_URL="$2"
       shift 2
       ;;
     --api-url)
+      require_value "$@"
       API_URL="$2"
       shift 2
       ;;
     --app-title)
+      require_value "$@"
       APP_TITLE="$2"
       shift 2
       ;;
     --maptiler-key)
+      require_value "$@"
       MAPTILER_KEY="$2"
       shift 2
       ;;
     --registry)
+      require_value "$@"
       REGISTRY="$2"
       shift 2
       ;;
     *)
       echo "Unknown option: $1"
-      echo "Usage: $0 --maptiler-key <key> [--tag <tag>] [--push] [--base-url <url>] [--api-url <url>] [--app-title <title>] [--registry <registry>]"
+      usage
       exit 1
       ;;
   esac
 done
 
+# The key is baked into the bundle at build time, so the map won't render
+# without it. It isn't required to check that the image builds, though.
 if [ -z "$MAPTILER_KEY" ]; then
-  echo "❌ Error: --maptiler-key is required."
-  echo "Usage: $0 --maptiler-key <key> [--tag <tag>] [--push] [--base-url <url>] [--api-url <url>] [--app-title <title>]"
-  exit 1
+  echo "⚠️  Warning: no --maptiler-key given; the map will not render in this image."
 fi
 
-TAGGED_IMAGE="$REGISTRY:$TAG"
-LATEST_IMAGE="$REGISTRY:latest"
+LOCAL_IMAGE="$IMAGE:$TAG"
 
 DOCKER_DEFAULT_PLATFORM="linux/amd64" docker build \
   --build-arg VITE_BASE_URL="$BASE_URL" \
   --build-arg VITE_API_URL="$API_URL" \
   --build-arg VITE_APP_TITLE="$APP_TITLE" \
-  --build-arg VITE_APP_DESCRIPTION="Destination Earth Digital Twin Assistant" \
+  --build-arg VITE_APP_DESCRIPTION="$APP_DESCRIPTION" \
   --build-arg VITE_MAPTILER_KEY="$MAPTILER_KEY" \
-   -t "$LOCAL_IMAGE" .
+  -t "$LOCAL_IMAGE" .
+
+if [ -z "$REGISTRY" ]; then
+  if [ "$PUSH" = true ]; then
+    echo "❌ Error: --push requires --registry."
+    exit 1
+  fi
+  exit 0
+fi
+
+TAGGED_IMAGE="$REGISTRY/$IMAGE:$TAG"
+LATEST_IMAGE="$REGISTRY/$IMAGE:latest"
 
 docker tag "$LOCAL_IMAGE" "$TAGGED_IMAGE"
 

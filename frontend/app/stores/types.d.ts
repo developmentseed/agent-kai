@@ -1,4 +1,8 @@
-import { ArtifactImage, ArtifactMessages } from '$artifacts/config';
+import {
+  ArtifactAOI,
+  ArtifactImage,
+  ArtifactMessages
+} from '$artifacts/config';
 
 export type ArtifactChatMessage<T, D> = {
   traceId: string;
@@ -63,14 +67,14 @@ export interface AgentStateMessage {
   messages: ReadonlyArray<AgentMessage>;
   error?: unknown | null;
 
-  /** AgentState-specific fields */
-  parameter_infos: ArtifactParameter[];
-  polytope_request?: ArtifactPolytope | null;
-  dt_plot?: ArtifactPlot | null;
+  /**
+   * Artifact-producing fields, mirroring the extra fields on `AgentState` in
+   * `backend/src/agent_kai/agent/state.py`. Add a field here when you add one
+   * there, and handle it in `processArtifactMessage`.
+   */
   aoi?: ArtifactAOI | null;
   image?: ArtifactImage | null;
 
-  remaining_steps: number;
-  onyx_chat_session_id?: string | null;
-  onyx_chat_auth_cookie?: string | null;
+  /** Set by LangGraph, not by our tools. */
+  remaining_steps?: number;
 }
