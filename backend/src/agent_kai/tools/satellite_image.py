@@ -72,12 +72,16 @@ async def fetch_nasa_apod_image_url(client: httpx.AsyncClient, api_key: str) -> 
     until we land on an image.
     """
     for _ in range(5):
-        response = await client.get(NASA_APOD_API_URL, params={"api_key": api_key, "count": 1})
+        response = await client.get(
+            NASA_APOD_API_URL, params={"api_key": api_key, "count": 1}
+        )
         response.raise_for_status()
         entry = response.json()[0]
         if entry.get("media_type") == "image":
             return entry.get("hdurl") or entry["url"]
-    raise RuntimeError("Could not find a NASA APOD entry with an image after 5 attempts")
+    raise RuntimeError(
+        "Could not find a NASA APOD entry with an image after 5 attempts"
+    )
 
 
 async def fetch_random_fun_image_url() -> tuple[str, str]:
@@ -87,7 +91,9 @@ async def fetch_random_fun_image_url() -> tuple[str, str]:
     """
     source = random.choice(IMAGE_SOURCES)
     # http2=True: Wikimedia's edge rejects HTTP/1.1-only clients as bots.
-    async with httpx.AsyncClient(follow_redirects=True, timeout=15, http2=True) as client:
+    async with httpx.AsyncClient(
+        follow_redirects=True, timeout=15, http2=True
+    ) as client:
         if source == "cat":
             image_url = await fetch_cat_image_url(client)
         elif source == "flower":

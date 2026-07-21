@@ -58,6 +58,7 @@ new tool:
    `frontend/app/artifacts/config.tsx`.
 """
 
+
 async def create_graph():
     tools = [
         get_area_of_interest,
