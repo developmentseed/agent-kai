@@ -59,3 +59,7 @@ You'll need a [Mistral AI](https://mistral.ai/) API key for the LLM and a
 [MapTiler](https://www.maptiler.com/) API key for the map — see
 `backend/.env.example` and `frontend/.env.example`. Langfuse tracing/ratings
 are optional and off by default.
+
+## License
+
+[MIT](./LICENSE)

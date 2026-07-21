@@ -52,3 +52,7 @@ We use `Scripts To Rule Them All` to abstract away common actions for developing
 - `scripts/lint` - This will invoke the linter and type checker to detect any issues
 - `scripts/format` - This will invoke the linter and formatter to attempt to automatically fix issues
 - `scripts/test` - This will run the tests within the backend
+
+## License
+
+[MIT](../LICENSE)

@@ -3,6 +3,7 @@ name = "agentkai"
 version = "0.13.0"
 description = "A barebones demo of an agentic chat application"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115.9",
