@@ -1,7 +1,7 @@
 {
   "name": "agentkai",
   "description": "AgentKai. Your personal AI",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/developmentseed/ororatech-wildfire-insights-agent.git"

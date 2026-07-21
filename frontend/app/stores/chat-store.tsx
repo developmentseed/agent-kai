@@ -7,10 +7,7 @@ import { cerror, clog, dev } from '$utils/dev';
 
 import devMesg from './msg.dev.json';
 import useArtifactStore from './artifact-store';
-import {
-  ArtifactMessages,
-  processArtifactMessage
-} from '../artifacts/config';
+import { ArtifactMessages, processArtifactMessage } from '../artifacts/config';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
