@@ -16,6 +16,6 @@ class AgentState(LangchainAgentState):
         Annotated[
             dict[str, Any] | None,
             "An image artifact to display to the user, shaped as "
-            "{'type': 'image/png', 'data': <base64-encoded PNG>}.",
+            "{'type': <mime type>, 'url': <publicly reachable image URL>}.",
         ]
     ]
