@@ -1,11 +1,10 @@
 [project]
 name = "agentkai"
-version = "0.12.0"
+version = "0.13.0"
 description = "A barebones demo of an agentic chat application"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "dotenv>=0.9.9",
     "fastapi>=0.115.9",
     "httpx[http2]>=0.28.1",
     "langchain>=0.3.26",

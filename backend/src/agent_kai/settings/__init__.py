@@ -14,12 +14,16 @@ LOG_LEVEL = Literal[
 
 
 class Settings(BaseSettings):
-    mistral_api_key: str
+    llm_provider: str = "mistralai"
+    llm_provider_key: str
+    llm_large_model: str = "mistral-large-latest"
+    llm_small_model: str = "mistral-small-latest"
     maptiler_api_key: str
     langfuse_public_key: str | None = None
     langfuse_secret_key: str | None = None
     langfuse_host: HttpUrl | None = None
     langfuse_enabled: bool = False
+    allowed_origins: list[str] = ["http://localhost:9000"]
     log_level: LOG_LEVEL = "DEBUG"
     version: str = "N/A"
     stable: bool = True  # Represents whether we know of any issues affecting our service that are current

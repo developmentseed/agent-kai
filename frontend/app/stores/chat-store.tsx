@@ -7,9 +7,14 @@ import { cerror, clog, dev } from '$utils/dev';
 
 import devMesg from './msg.dev.json';
 import useArtifactStore from './artifact-store';
-import { processArtifactMessage } from '../artifacts/config';
+import { ArtifactMessages, processArtifactMessage } from '../artifacts/config';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+
+// Message types that render as an artifact, and so should pop the artifact
+// viewer open when one arrives. Extend this when adding a new artifact type
+// to `ArtifactMessages`.
+const ARTIFACT_MESSAGE_TYPES: ArtifactMessages['type'][] = ['aoi', 'image'];
 
 interface ChatState {
   messages: ChatMessage[];
@@ -202,8 +207,8 @@ const useChatStore = create<ChatState & ChatActions>((set, get) => ({
       const newMessages = get().messages.slice(currMessageCount);
       const latestArtifact = newMessages
         .reverse()
-        .find((msg) =>
-          ['aoi', 'parameter', 'plot', 'polytope'].includes(msg.type)
+        .find((msg): msg is ArtifactMessages =>
+          ARTIFACT_MESSAGE_TYPES.includes(msg.type as ArtifactMessages['type'])
         );
       if (latestArtifact) {
         // If there's an artifact message, open it in the artifact viewer

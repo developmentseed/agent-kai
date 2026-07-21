@@ -25,7 +25,19 @@ You will need the following installed:
 
 ## LLM dependencies
 
-The app uses the Mistral AI API for the LLM, which requires an API key. Set `MISTRAL_API_KEY` in your `.env` file.
+The LLM provider is configurable. The agent uses two models — a `large` one (used by the
+agent graph) and a `small` one (available for cheaper, narrower tasks) — both created via
+LangChain's `init_chat_model`, so any provider it supports can be used.
+
+Set the following in your `.env` file:
+
+- `LLM_PROVIDER_KEY` (required) - the API key for the provider
+- `LLM_PROVIDER` - the LangChain provider id, defaults to `mistralai`
+- `LLM_LARGE_MODEL` - defaults to `mistral-large-latest`
+- `LLM_SMALL_MODEL` - defaults to `mistral-small-latest`
+
+If you switch provider, install its LangChain integration package (e.g.
+`uv add langchain-openai`) in place of `langchain-mistralai`.
 
 ## Map / imagery dependencies
 

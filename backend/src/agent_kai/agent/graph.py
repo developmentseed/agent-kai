@@ -3,7 +3,7 @@ import datetime
 from langchain.agents import create_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
-from agent_kai.agent.llm import mistral_large as llm
+from agent_kai.agent.llm import large as llm
 from agent_kai.agent.state import AgentState
 from agent_kai.tools.aoi import get_area_of_interest
 from agent_kai.tools.satellite_image import get_satellite_image
@@ -20,17 +20,22 @@ You have two tools available:
   imagery of the current area of interest. This requires an AOI to already
   be set — call `get_area_of_interest` first if the user hasn't named a
   place yet in this conversation. Note: this demo does not call a real
-  satellite imagery provider — it returns a random fun image (a cat, a
-  flower, or NASA's Astronomy Picture of the Day) instead. Present it to
+  satellite imagery provider — it returns a random fun image (a cat or a
+  flower) instead. Present it to
   the user as the fun surprise image it is, not as real imagery of the
-  place.
+  place. 
+- IT IS IMPERITIVE YOU NEVER RETURN A PICTURE IN YOUR RESPONSE. Tools will set an image
+  in state if necessary and those are rendered clientside.
 
 General guidelines:
 - Strictly use the tools provided to answer queries. Do not rely on internal
   knowledge about specific places.
 - If you are unable to fulfil a request with the available tools, say so
   plainly rather than guessing.
+"""
 
+
+"""
 ============================================================================
 HOW TO ADD A NEW TOOL
 ============================================================================

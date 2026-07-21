@@ -1,4 +1,3 @@
-import datetime
 import json
 import logging
 import sys
@@ -6,7 +5,6 @@ from contextlib import aclosing, asynccontextmanager
 from http import HTTPStatus
 from typing import Any, AsyncGenerator, Dict, cast
 
-from dotenv import load_dotenv
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -25,7 +23,6 @@ from agent_kai.api.schemas.ratings import CreateRatingBody
 from agent_kai.api.schemas.version import VersionResponse
 from agent_kai.settings import get_settings
 
-load_dotenv()
 settings = get_settings()
 
 # Whitelist state fields that can be set by the user.
@@ -55,7 +52,10 @@ app = FastAPI(title="AgentKai API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
+    # Set ALLOWED_ORIGINS in your .env to wherever the frontend is served from.
+    # Browsers reject a wildcard origin on credentialed requests, so this has
+    # to be an explicit list.
+    allow_origins=settings.allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],  # Allows all HTTP methods (GET, POST, PUT, DELETE, etc.)
     allow_headers=["*"],  # Allows all headers
@@ -83,19 +83,6 @@ async def readiness() -> JSONResponse:
             content={"status": "not ready", "stable": False},
             status_code=HTTPStatus.SERVICE_UNAVAILABLE,
         )
-
-
-def _stringify_dates(obj: Any) -> Any:
-    if isinstance(obj, list):
-        return [_stringify_dates(item) for item in obj]
-    elif isinstance(obj, dict):
-        return {key: _stringify_dates(value) for key, value in obj.items()}
-    elif isinstance(obj, datetime.date):
-        return obj.strftime("%Y%m%d")
-    elif isinstance(obj, datetime.datetime):
-        return obj.isoformat()
-    else:
-        return obj
 
 
 async def stream_chat(
@@ -188,6 +175,12 @@ async def chat(request: ChatRequestBody, http_request: Request) -> StreamingResp
 
 @app.post("/ratings")
 async def create_rating(request: CreateRatingBody) -> Response:
+    # Ratings are stored as Langfuse scores against the trace of the response
+    # being rated, so there is nowhere to put them when tracing is off.
+    if not settings.langfuse_enabled:
+        logger.info("Rating discarded: langfuse is not enabled.")
+        return Response(status_code=HTTPStatus.SERVICE_UNAVAILABLE)
+
     try:
         langfuse_client.create_score(
             name="user-feedback",
